@@ -37,15 +37,7 @@ commonLabels: {}
 commonAnnotations: {}
 ## @param extraDeploy Array of extra objects to deploy with the release
 ##
-extraDeploy:
-  - |
-    apiVersion: operator.projectcontour.io/v1alpha1
-    kind: Contour
-    metadata:
-      name: contour-sample
-    spec:
-      namespace:
-        name: {{ .Release.Namespace | quote }}
+extraDeploy: []
 
 ## @section Contour Operator Parameters
 ##

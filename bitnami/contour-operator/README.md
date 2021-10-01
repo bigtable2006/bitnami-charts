@@ -1,19 +1,19 @@
-# rabbitmq-cluster-operator
+# Contour Operator
 
-[The RabbitMQ Cluster Kubernetes Operator](https://github.com/rabbitmq/cluster-operator) automates provisioning, management, and operations of RabbitMQ clusters running on Kubernetes.
+[The Contour Operator](hhttps://github.com/projectcontour/contour-operator/) extends the Kubernetes API to create, configure and manage instances of Contour on behalf of users.
 
 ## TL;DR
 
 ```console
 $ helm repo add bitnami https://charts.bitnami.com/bitnami
-$ helm install my-release bitnami/rabbitmq-cluster-operator
+$ helm install my-release bitnami/contour-operator
 ```
 
 ## Introduction
 
 Bitnami charts for Helm are carefully engineered, actively maintained and are the quickest and easiest way to deploy containers on a Kubernetes cluster that are ready to handle production workloads.
 
-This chart bootstraps a [RabbitMQ Cluster Operator](https://www.rabbitmq.com/kubernetes/operator/operator-overview.html) Deployment in a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart bootstraps a [Contour Operator](https://github.com/projectcontour/contour-operator/) Deployment in a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment and management of Helm Charts in clusters. This Helm chart has been tested on top of [Bitnami Kubernetes Production Runtime](https://kubeprod.io/) (BKPR). Deploy BKPR to get automated TLS certificates, logging and monitoring for your applications.
 
@@ -28,10 +28,10 @@ Bitnami charts can be used with [Kubeapps](https://kubeapps.com/) for deployment
 To install the chart with the release name `my-release`:
 
 ```console
-helm install my-release bitnami/rabbitmq-cluster-operators
+helm install my-release bitnami/contour-operator
 ```
 
-The command deploy the RabbitMQ Cluster Kubernetes Operator on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
+The command deploys the Contour Operator on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -44,84 +44,6 @@ helm delete my-release
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
-
-## Differences between the Bitnami RabbitMQ chart and the Bitnami RabbitMQ Operator chart
-
-In the Bitnami catalog we offer both the *bitnami/rabbitmq* and *bitnami/rabbitmq-operator* charts. Each solution covers different needs and use cases.
-
-The *bitnami/rabbitmq* chart deploys a single RabbitMQ installation using a Kubernetes StatefulSet object (together with Services, PVCs, ConfigMaps, etc.). The figure below shows the deployed objects in the cluster after executing *helm install*:
-
-```
-                    +--------------+             +-----+
-                    |              |             |     |
- Service            |   RabbitMQ   +<------------+ PVC |
-<-------------------+              |             |     |
-                    |  StatefulSet |             +-----+
-                    |              |
-                    +-----------+--+
-                                ^                +------------+
-                                |                |            |
-                                +----------------+ Configmaps |
-                                                 | Secrets    |
-                                                 +------------+
-
-```
-
-Its lifecycle is managed using Helm and, at the RabbitMQ container level, the following operations are automated: persistence management, configuration based on environment variables and plugin initialization. The StatefulSet do not require any ServiceAccounts with special RBAC privileges so this solution would fit better in more restricted Kubernetes installations.
-
-The *bitnami/rabbitmq-operator* chart deploys a RabbitMQ Operator installation using a Kubernetes Deployment.  The figure below shows the RabbitMQ operator deployment after executing *helm install*:
-
-```
-+--------------------+
-|                    |      +---------------+
-|  RabbitMQ Operator |      |               |
-|                    |      |     RBAC      |
-|     Deployment     |      | Privileges    |
-+-------+------------+      +-------+-------+
-        ^                           |
-        |   +-----------------+     |
-        +---+ Service Account +<----+
-            +-----------------+
-```
-
-The operator will extend the Kubernetes API with the following object: *RabbitmqCluster*. From that moment, the user will be able to deploy objects of these kinds and the previously deployed Operator will take care of deploying all the required StatefulSets, ConfigMaps and Services for running a RabbitMQ instance. Its lifecycle is managed using *kubectl* on the RabbitmqCluster objects. The following figure shows the deployed objects after deploying a *RabbitmqCluster* object using *kubectl*:
-
-```
-  +--------------------+
-  |                    |      +---------------+
-  |  RabbitMQ Operator |      |               |
-  |                    |      |     RBAC      |
-  |     Deployment     |      | Privileges    |
-  +-------+------------+      +-------+-------+
-    │     ^                           |
-    │     |   +-----------------+     |
-    │     +---+ Service Account +<----+
-    │         +-----------------+
-    │
-    │
-    │
-    │
-    │    ┌───────────────────────────────────────────────────────────────────────┐
-    │    │                                                                       │
-    │    │                        +--------------+             +-----+           │
-    │    │                        |              |             |     |           │
-    └────►     Service            |   RabbitMQ   +<------------+ PVC |           │
-         │    <-------------------+              |             |     |           │
-         │                        |  StatefulSet |             +-----+           │
-         │                        |              |                               │
-         │                        +-----------+--+                               │
-         │                                    ^                +------------+    │
-         │                                    |                |            |    │
-         │                                    +----------------+ Configmaps |    │
-         │                                                     | Secrets    |    │
-         │                                                     +------------+    │
-         │                                                                       │
-         │                                                                       │
-         └───────────────────────────────────────────────────────────────────────┘
-
-```
-
-This solution allows to easily deploy multiple RabbitMQ instances compared to the *bitnami/rabbitmq* chart. As the operator automatically deploys RabbitMQ installations, the RabbitMQ Operator pods will require a ServiceAccount with privileges to create and destroy multiple Kubernetes objects. This may be problematic for Kubernetes clusters with strict role-based access policies.
 
 ## Parameters
 
@@ -161,7 +83,7 @@ This solution allows to easily deploy multiple RabbitMQ instances compared to th
 | `contourImage.pullSecrets`           | Contour Image pull secrets                                                                     | `[]`                       |
 | `envoyImage.registry`                | Envoy Image registry                                                                           | `docker.io`                |
 | `envoyImage.repository`              | Envoy Image repository                                                                         | `bitnami/envoy`            |
-| `envoyImage.tag`                     | Envoy Image tag (immutable tags are recommended)                                               | `1.16.5-debian-10-r21`     |
+| `envoyImage.tag`                     | Envoy Image tag (immutable tags are recommended)                                               | `1.19.1-debian-10-r36`     |
 | `envoyImage.pullSecrets`             | Envoy Image pull secrets                                                                       | `[]`                       |
 | `replicaCount`                       | Number of Contour Operator replicas to deploy                                                  | `1`                        |
 | `livenessProbe.enabled`              | Enable livenessProbe on Contour Operator nodes                                                 | `true`                     |
@@ -258,14 +180,12 @@ This solution allows to easily deploy multiple RabbitMQ instances compared to th
 
 See [readme-generator-for-helm](https://github.com/bitnami-labs/readme-generator-for-helm) to create the table.
 
-The above parameters map to the env variables defined in [bitnami/rabbitmq-cluster-operator](http://github.com/bitnami/bitnami-docker-rabbitmq-cluster-operator). For more information please refer to the [bitnami/rabbitmq-cluster-operator](http://github.com/bitnami/bitnami-docker-rabbitmq-cluster-operator) image documentation.
-
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
 helm install my-release \
   --set livenessProbe.enabled=false \
-    bitnami/rabbitmq-cluster-operator
+    bitnami/contour-operator
 ```
 
 The above command disables the Operator liveness probes.
@@ -273,7 +193,7 @@ The above command disables the Operator liveness probes.
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
 ```console
-helm install my-release -f values.yaml bitnami/rabbitmq-cluster-operator
+helm install my-release -f values.yaml bitnami/contour-operator
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
@@ -291,40 +211,40 @@ Bitnami will release a new chart updating its containers if a new version of the
 In case you want to add extra environment variables (useful for advanced operations like custom init scripts), you can use the `extraEnvVars` property.
 
 ```yaml
-rabbitmq-cluster-operator:
+contour-operator:
   extraEnvVars:
-    - name: LOG_LEVEL
-      value: error
+    - name: MY_VARIABLE
+      value: my_value
 ```
 
 Alternatively, you can use a ConfigMap or a Secret with the environment variables. To do so, use the `extraEnvVarsCM` or the `extraEnvVarsSecret` values.
 
 ### Sidecars
 
-If additional containers are needed in the same pod as rabbitmq-cluster-operator (such as additional metrics or logging exporters), they can be defined using the `sidecars` parameter. If these sidecars export extra ports, extra port definitions can be added using the `service.extraPorts` parameter. [Learn more about configuring and using sidecar containers](https://docs.bitnami.com/kubernetes/apps/rabbitmq-cluster-operator/administration/configure-use-sidecars/).
+If additional containers are needed in the same pod as contour-operator (such as additional metrics or logging exporters), they can be defined using the `sidecars` parameter. If these sidecars export extra ports, extra port definitions can be added using the `service.extraPorts` parameter. [Learn more about configuring and using sidecar containers](https://docs.bitnami.com/kubernetes/apps/contour-operator/administration/configure-use-sidecars/).
 
 ### Pod affinity
 
 This chart allows you to set your custom affinity using the `affinity` parameter. Find more information about Pod affinity in the [kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity).
 
 As an alternative, use one of the preset configurations for pod affinity, pod anti-affinity, and node affinity available at the [bitnami/common](https://github.com/bitnami/charts/tree/master/bitnami/common#affinities) chart. To do so, set the `podAffinityPreset`, `podAntiAffinityPreset`, or `nodeAffinityPreset` parameters.
+
 ### Deploying extra resources
 
-There are cases where you may want to deploy extra objects, such your custom *RabbitmqCluster* objects. For covering this case, the chart allows adding the full specification of other objects using the `extraDeploy` parameter.
+There are cases where you may want to deploy extra objects, such your custom *Contour* objects. For covering this case, the chart allows adding the full specification of other objects using the `extraDeploy` parameter.
 
-For instance, to deploy your custom *RabbitmqCluster* definition, you can install the RabbitMQ Cluster Operator using the values below:
+For instance, to deploy your custom *Contour* definition, you can install the Contour using the values below:
 
 ```yaml
 extraDeploy:
-  - apiVersion: rabbitmq.com/v1beta1
-    kind: RabbitmqCluster
+  - |
+    apiVersion: operator.projectcontour.io/v1alpha1
+    kind: Contour
     metadata:
-      name: rabbitmq-custom-configuration
+      name: contour-sample
     spec:
-      replicas: 1
-      rabbitmq:
-        additionalConfig: |
-          log.console.level = debug
+      namespace:
+        name: {{ .Release.Namespace | quote }}
 ```
 
 ## Troubleshooting
