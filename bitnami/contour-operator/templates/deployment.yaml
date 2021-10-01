@@ -74,7 +74,7 @@ spec:
             - --v=10
           ports:
             - containerPort: {{ .Values.metrics.proxy.containerPort }}
-              name: https
+              name: metrics-proxy
           {{- if .Values.metrics.proxy.resources }}
           resources: {{- toYaml .Values.metrics.proxy.resources | nindent 12 }}
           {{- end }}
@@ -119,7 +119,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /metrics
-              port: http
+              port: metrics
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
@@ -132,7 +132,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /metrics
-              port: http
+              port: metrics
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
@@ -145,7 +145,7 @@ spec:
           startupProbe:
             httpGet:
               path: /metrics
-              port: http
+              port: metrics
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
@@ -162,7 +162,7 @@ spec:
           {{- end }}
           ports:
             - containerPort: {{ .Values.containerPort }}
-              name: http
+              name: metrics
         {{- if .Values.sidecars }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.sidecars "context" $) | nindent 8 }}
         {{- end }}
