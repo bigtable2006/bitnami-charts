@@ -36,7 +36,7 @@ spec:
   ports:
     - name: metrics
       port: {{ .Values.metrics.service.port }}
-      targetPort: {{ ternary "metrics-proxy" "metrics" .Values.metrics.proxy.enabled }}
+      targetPort: metrics
       protocol: TCP
       {{- if (and (or (eq .Values.metrics.service.type "NodePort") (eq .Values.metrics.service.type "LoadBalancer")) (not (empty .Values.metrics.service.nodePorts.https))) }}
       nodePort: {{ .Values.metrics.service.nodePorts.http }}

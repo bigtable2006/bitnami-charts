@@ -342,48 +342,6 @@ metrics:
   ##
   enabled: false
 
-  ## Kube RBAC proxy
-  ##
-  proxy:
-    ## @param metrics.proxy.enabled Whether or not enable 
-    ##
-    enabled: false
-    ## Bitnami kube-rbac-proxy image
-    ## ref: https://hub.docker.com/r/bitnami/kube-rbac-proxy/tags/
-    ## @param metrics.proxy.image.registry kube-rbac-proxy image registry
-    ## @param metrics.proxy.image.repository kube-rbac-proxy image repository
-    ## @param metrics.proxy.image.tag kube-rbac-proxy image tag (immutable tags are recommended)
-    ## @param metrics.proxy.image.pullPolicy kube-rbac-proxy image pull policy
-    ## @param metrics.proxy.image.pullSecrets Specify docker-registry secret names as an array
-    ##
-    image:
-      registry: docker.io
-      repository: bitnami/kube-rbac-proxy
-      tag: 0.11.0-scratch-r0
-      ## Specify a imagePullPolicy
-      ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-      ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-      ##
-      pullPolicy: IfNotPresent
-      ## Optionally specify an array of imagePullSecrets (secrets must be manually created in the namespace)
-      ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-      ## Example:
-      ## pullSecrets:
-      ##   - myRegistryKeySecretName
-      ##
-      pullSecrets: []
-    ## @param metrics.proxy.containerPort kube-rbac-proxy container port (used for metrics)
-    ##
-    containerPort: 8443
-    ## kube-rbac-proxy resource requests and limits
-    ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-    ## @param metrics.proxy.resources.limits The resources limits for the kube-rbac-proxy container
-    ## @param metrics.proxy.resources.requests The requested resources for the kube-rbac-proxy container
-    ##
-    resources:
-      limits: {}
-      requests: {}
-
   ## Metrics service parameters
   ##
   service:

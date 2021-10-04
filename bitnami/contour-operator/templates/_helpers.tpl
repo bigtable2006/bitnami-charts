@@ -20,13 +20,6 @@ Return the proper Envoy image name
 {{- end -}}
 
 {{/*
-Return the proper kube-rbac-proxy image name
-*/}}
-{{- define "contour-operator.proxy.image" -}}
-{{ include "common.images.image" (dict "imageRoot" .Values.metrics.proxy.image "global" .Values.global) }}
-{{- end -}}
-
-{{/*
 Return the proper Docker Image Registry Secret Names
 */}}
 {{- define "contour-operator.imagePullSecrets" -}}

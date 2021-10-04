@@ -1,6 +1,6 @@
 # Contour Operator
 
-[The Contour Operator](hhttps://github.com/projectcontour/contour-operator/) extends the Kubernetes API to create, configure and manage instances of Contour on behalf of users.
+[The Contour Operator](https://github.com/projectcontour/contour-operator/) extends the Kubernetes API to create, configure and manage instances of Contour on behalf of users.
 
 ## TL;DR
 
@@ -151,31 +151,22 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ### Metrics parameters
 
-| Name                                       | Description                                                                 | Value                     |
-| ------------------------------------------ | --------------------------------------------------------------------------- | ------------------------- |
-| `metrics.enabled`                          | Create a service for accessing the metrics endpoint                         | `false`                   |
-| `metrics.proxy.enabled`                    | Whether or not enable                                                       | `false`                   |
-| `metrics.proxy.image.registry`             | kube-rbac-proxy image registry                                              | `docker.io`               |
-| `metrics.proxy.image.repository`           | kube-rbac-proxy image repository                                            | `bitnami/kube-rbac-proxy` |
-| `metrics.proxy.image.tag`                  | kube-rbac-proxy image tag (immutable tags are recommended)                  | `0.11.0-scratch-r0`       |
-| `metrics.proxy.image.pullPolicy`           | kube-rbac-proxy image pull policy                                           | `IfNotPresent`            |
-| `metrics.proxy.image.pullSecrets`          | Specify docker-registry secret names as an array                            | `[]`                      |
-| `metrics.proxy.containerPort`              | kube-rbac-proxy container port (used for metrics)                           | `8443`                    |
-| `metrics.proxy.resources.limits`           | The resources limits for the kube-rbac-proxy container                      | `{}`                      |
-| `metrics.proxy.resources.requests`         | The requested resources for the kube-rbac-proxy container                   | `{}`                      |
-| `metrics.service.type`                     | Contour Operator metrics service type                                       | `ClusterIP`               |
-| `metrics.service.port`                     | Contour Operator metrics service HTTP port                                  | `80`                      |
-| `metrics.service.nodePorts.http`           | Node port for HTTP                                                          | `""`                      |
-| `metrics.service.clusterIP`                | Contour Operator metrics service Cluster IP                                 | `""`                      |
-| `metrics.service.loadBalancerIP`           | Contour Operator metrics service Load Balancer IP                           | `""`                      |
-| `metrics.service.loadBalancerSourceRanges` | Contour Operator metrics service Load Balancer sources                      | `[]`                      |
-| `metrics.service.externalTrafficPolicy`    | Contour Operator metrics service external traffic policy                    | `Cluster`                 |
-| `metrics.service.annotations`              | Additional custom annotations for Contour Operator metrics service          | `{}`                      |
-| `metrics.serviceMonitor.enabled`           | Specify if a servicemonitor will be deployed for prometheus-operator        | `false`                   |
-| `metrics.serviceMonitor.jobLabel`          | Specify the jobLabel to use for the prometheus-operator                     | `app.kubernetes.io/name`  |
-| `metrics.serviceMonitor.interval`          | Scrape interval. If not set, the Prometheus default scrape interval is used | `""`                      |
-| `metrics.serviceMonitor.metricRelabelings` | Specify additional relabeling of metrics                                    | `[]`                      |
-| `metrics.serviceMonitor.relabelings`       | Specify general relabeling                                                  | `[]`                      |
+| Name                                       | Description                                                                 | Value                    |
+| ------------------------------------------ | --------------------------------------------------------------------------- | ------------------------ |
+| `metrics.enabled`                          | Create a service for accessing the metrics endpoint                         | `false`                  |
+| `metrics.service.type`                     | Contour Operator metrics service type                                       | `ClusterIP`              |
+| `metrics.service.port`                     | Contour Operator metrics service HTTP port                                  | `80`                     |
+| `metrics.service.nodePorts.http`           | Node port for HTTP                                                          | `""`                     |
+| `metrics.service.clusterIP`                | Contour Operator metrics service Cluster IP                                 | `""`                     |
+| `metrics.service.loadBalancerIP`           | Contour Operator metrics service Load Balancer IP                           | `""`                     |
+| `metrics.service.loadBalancerSourceRanges` | Contour Operator metrics service Load Balancer sources                      | `[]`                     |
+| `metrics.service.externalTrafficPolicy`    | Contour Operator metrics service external traffic policy                    | `Cluster`                |
+| `metrics.service.annotations`              | Additional custom annotations for Contour Operator metrics service          | `{}`                     |
+| `metrics.serviceMonitor.enabled`           | Specify if a servicemonitor will be deployed for prometheus-operator        | `false`                  |
+| `metrics.serviceMonitor.jobLabel`          | Specify the jobLabel to use for the prometheus-operator                     | `app.kubernetes.io/name` |
+| `metrics.serviceMonitor.interval`          | Scrape interval. If not set, the Prometheus default scrape interval is used | `""`                     |
+| `metrics.serviceMonitor.metricRelabelings` | Specify additional relabeling of metrics                                    | `[]`                     |
+| `metrics.serviceMonitor.relabelings`       | Specify general relabeling                                                  | `[]`                     |
 
 
 See [readme-generator-for-helm](https://github.com/bitnami-labs/readme-generator-for-helm) to create the table.

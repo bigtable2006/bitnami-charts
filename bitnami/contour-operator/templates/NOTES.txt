@@ -7,4 +7,3 @@ Watch the Contour Operator Deployment status using the command:
 {{ include "common.warnings.rollingTag" .Values.image }}
 {{ include "common.warnings.rollingTag" .Values.contourImage }}
 {{ include "common.warnings.rollingTag" .Values.envoyImage }}
-{{ include "common.warnings.rollingTag" .Values.metrics.proxy.image }}
