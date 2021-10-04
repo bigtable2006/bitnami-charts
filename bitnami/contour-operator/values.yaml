@@ -382,7 +382,7 @@ metrics:
     annotations:
       prometheus.io/scrape: "true"
       prometheus.io/port: "{{ .Values.metrics.service.port }}"
-  
+
   serviceMonitor:
     ## @param metrics.serviceMonitor.enabled Specify if a servicemonitor will be deployed for prometheus-operator
     ##
